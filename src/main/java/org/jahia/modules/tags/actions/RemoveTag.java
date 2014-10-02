@@ -72,13 +72,13 @@
 package org.jahia.modules.tags.actions;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.jahia.bin.Action;
 import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
-import org.jahia.services.tags.BaseTagAction;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +86,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 
-public class RemoveTag extends BaseTagAction {
+public class RemoveTag extends Action {
 
     @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource, JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
@@ -95,9 +95,28 @@ public class RemoveTag extends BaseTagAction {
         Map<String,String> res = new HashMap<String,String>();
 
         if(CollectionUtils.isNotEmpty(parameters.get("tag"))){
-            taggingService.untag(node, parameters.get("tag"));
+            String[] tags = node.getPropertyAsString("j:tags").split(" ");
+            ArrayList<String> tagsList = new ArrayList<String>();
+            tagsList.addAll(Arrays.asList(tags));
+
+            for(String tag : parameters.get("tag")){
+                JCRNodeWrapper tagNode = session.getNode("/sites/" + urlResolver.getSiteKey() + "/tags/" + tag.trim());
+                if (tagsList.contains(tagNode.getIdentifier())) {
+                    if (tagsList.size() > 0) {
+                        for (int i = 0; i < tagsList.size(); i++) {
+                            if (tagsList.get(i).equals(tagNode.getIdentifier())) {
+                                tagsList.remove(i);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            String[] str = tagsList.toArray(new String[tagsList.size()]);
+            node.setProperty("j:tags", str);
             jcrSessionWrapper.save();
-            res.put("size", node.hasProperty("j:tagList") ? String.valueOf(node.getProperty("j:tagList").getValues().length) : "0");
+
+            res.put("size", String.valueOf(tagsList.size()));
         }
 
         return new ActionResult(HttpServletResponse.SC_OK, node.getPath(), new JSONObject(res));
