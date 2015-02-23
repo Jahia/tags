@@ -5,7 +5,7 @@
     =                   JAHIA'S DUAL LICENSING - IMPORTANT INFORMATION                       =
     ==========================================================================================
 
-        Copyright (C) 2002-2014 Jahia Solutions Group SA. All rights reserved.
+        Copyright (C) 2002-2015 Jahia Solutions Group SA. All rights reserved.
 
         THIS FILE IS AVAILABLE UNDER TWO DIFFERENT LICENSES:
         1/GPL OR 2/JSEL
@@ -82,13 +82,14 @@
         <version>7.1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>tags</artifactId>
+	<version>7.1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Jahia Tags</name>
     <description>This is the custom module (Jahia Tags) for running on a Jahia server.</description>
     <scm>
-        <connection>scm:svn:https://devtools.jahia.com/svn/jahia/trunk/modules/tags</connection>
-        <developerConnection>scm:svn:https://devtools.jahia.com/svn/jahia/trunk/modules/tags</developerConnection>
-        <url>https://devtools.jahia.com/svn/jahia/trunk/modules/tags</url>
+        <connection>scm:git:git@github.com:Jahia/tags.git</connection>
+        <developerConnection>scm:git:git@github.com:Jahia/tags.git</developerConnection>
+        <url>scm:git:git@github.com:Jahia/tags.git</url>
     </scm>
 
     <properties>
