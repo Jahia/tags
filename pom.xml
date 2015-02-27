@@ -88,7 +88,7 @@
         <connection>scm:git:git@github.com:Jahia/tags.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/tags.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/tags.git</url>
-		<tags>JAHIA-7-0-X-X-BRANCH</tags>
+		<tag>JAHIA-7-0-X-X-BRANCH</tag>
     </scm>
   <repositories>
     <repository>
