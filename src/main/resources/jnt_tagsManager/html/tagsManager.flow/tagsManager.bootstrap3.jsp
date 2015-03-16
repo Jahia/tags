@@ -79,7 +79,12 @@
         $(document).ready(function () {
             $(document).ready(function () {
                 $('#tableTagsList').DataTable({
-                    "iDisplayLength": 100
+                    "iDisplayLength": 100,
+                    "aoColumns": [ //disable search for col 2 and 3
+                        null,
+                        { "bSearchable": false },
+                        { "bSearchable": false }
+                    ]
                 });
             });
 

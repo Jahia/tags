@@ -79,7 +79,12 @@
         $(document).ready(function () {
             $('#tableTagDetails').dataTable({
                 "iDisplayLength": 100,
-                "aaSorting": [[1, 'asc']]
+                "aaSorting": [[1, 'asc']],
+                "aoColumns": [ //disable search for col 2 and 3
+                    null,
+                    { "bSearchable": false },
+                    { "bSearchable": false }
+                ]
             });
 
             tagsSuggester.initialize();

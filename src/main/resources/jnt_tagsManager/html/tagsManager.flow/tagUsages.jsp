@@ -80,7 +80,12 @@
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "iDisplayLength": 100,
                 "sPaginationType": "bootstrap",
-                "aaSorting": [[1, 'asc']]
+                "aaSorting": [[1, 'asc']],
+                "aoColumns": [ //disable search for col 2 and 3
+                    null,
+                    { "bSearchable": false },
+                    { "bSearchable": false }
+                ]
             });
 
             tagsSuggester.initialize();
