@@ -27,7 +27,7 @@
                     <tagsManager j:applyOn="jnt:virtualsite"
                                  j:defaultTemplate="false"
                                  j:hiddenTemplate="true"
-                                 j:requiredPermissionNames="tagsManager"
+                                 j:requiredPermissionNames="tagManager"
                                  j:titleKey="jnt_tagsManager"
                                  j:icon="/modules/tags/templates/files/tagManager.png"
                                  jcr:mixinTypes="jmix:rbTitle"
@@ -39,7 +39,7 @@
                     <tagsManager_live j:applyOn="jnt:virtualsite"
                                       j:defaultTemplate="false"
                                       j:hiddenTemplate="true"
-                                      j:requiredPermissionNames="tagsManager"
+                                      j:requiredPermissionNames="tagManager"
                                       j:titleKey="jnt_tagsManager"
                                       jcr:mixinTypes="jmix:rbTitle jmix:hiddenNode"
                                       jcr:primaryType="jnt:contentTemplate">

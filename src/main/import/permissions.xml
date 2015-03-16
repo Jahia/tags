@@ -3,7 +3,7 @@
              xmlns:j="http://www.jahia.org/jahia/1.0">
 
     <site-admin jcr:primaryType="jnt:permission">
-        <tagsManager jcr:primaryType="jnt:permission"/>
+        <tagManager jcr:primaryType="jnt:permission"/>
     </site-admin>
 
 </permissions>
