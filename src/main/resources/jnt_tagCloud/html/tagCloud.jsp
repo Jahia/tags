@@ -57,7 +57,7 @@
                         </c:if>
                         <c:url var="facetUrl" value="${url.base}${currentNode.properties.resultPage.node.path}.html">
                             <c:param name="src_terms[0].term" value="${tag.key}"/>
-                            <c:param name="src_terms[0].fields.tagList" value="true"/>
+                            <c:param name="src_terms[0].fields.tags" value="true"/>
                             <c:param name="src_sites.values" value="${renderContext.site.siteKey}"/>
                             <c:param name="autoSuggest" value="false"/>
                         </c:url>
