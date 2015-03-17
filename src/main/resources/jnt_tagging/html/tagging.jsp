@@ -54,7 +54,7 @@
                     url: "<c:url value="${url.base}${boundComponent.path}"/>.addTag.do",
                     type: "POST",
                     dataType: "json",
-                    data: {tag: $this.val().split(',')},
+                    data: {tag: $this.val().split(','), "form-token": $this.parent().find("input[name='form-token']").val()},
                     traditional: true
                 };
                 $.ajax(options)
@@ -93,11 +93,13 @@
 
     </script>
     <c:if test="${renderContext.user.name != 'guest'}">
-        <form action="/" method="post">
-            <label><fmt:message key="label.add.tags"/></label>
-            <input type="text" name="tag" class="newTagInput${currentNode.identifier}" value=""/>
-            <input type="submit" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button"
-                    onclick="addTag_${fn:replace(boundComponent.identifier, "-", "_")} ('.newTagInput${currentNode.identifier}'); return false;"/>
-        </form>
+        <template:tokenizedForm allowsMultipleSubmits="true">
+            <form action="<c:url value="${url.base}${boundComponent.path}"/>.addTag.do" method="post">
+                <label><fmt:message key="label.add.tags"/></label>
+                <input type="text" name="tag" class="newTagInput${currentNode.identifier}"/>
+                <input type="button" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button"
+                       onclick="addTag_${fn:replace(boundComponent.identifier, "-", "_")} ('.newTagInput${currentNode.identifier}');"/>
+            </form>
+        </template:tokenizedForm>
     </c:if>
 </c:if>

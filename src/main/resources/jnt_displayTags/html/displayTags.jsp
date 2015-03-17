@@ -25,11 +25,17 @@
         <jcr:nodeProperty node="${boundComponent}" name="j:tagList" var="assignedTags"/>
         <c:set var="separator" value="${functions:default(currentResource.moduleParams.separator, ', ')}"/>
         <c:if test="${not nodeLocked}">
+            <template:tokenizedForm allowsMultipleSubmits="true">
+                <form id="deleteTagForm_${fn:replace(boundComponent.identifier, "-", "_")}" action="<c:url value="${url.base}${boundComponent.path}"/>.removeTag.do" method="post">
+                    <input type="text" name="tag">
+                    <input type="text" name="unescape">
+                </form>
+            </template:tokenizedForm>
             <script type="text/javascript">
                 function deleteTag_${fn:replace(boundComponent.identifier, "-", "_")} (htmlDeleteLink) {
                     var tagItem = $(htmlDeleteLink).parent();
                     var tag = htmlDeleteLink.dataset.tag;
-                    $.post("<c:url value="${url.base}${boundComponent.path}"/>.removeTag.do", {"tag":tag, "unescape":true}, function(result) {
+                    $.post("<c:url value="${url.base}${boundComponent.path}"/>.removeTag.do", {"tag":tag, "unescape":true, "form-token": $('#deleteTagForm_${fn:replace(boundComponent.identifier, "-", "_")}').find("input[name='form-token']").val()}, function(result) {
                         tagItem.hide();
                         if(result.size == "0"){
                             var spanNotYetTag = $('<span><fmt:message key="label.tags.notag"/></span>').attr('class', 'notaggeditem${boundComponent.identifier}');
