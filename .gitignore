@@ -1,0 +1,10 @@
+/.classpath
+/.project
+/.settings
+.idea
+*.iml
+*.ipr
+target
+.DS_Store
+repository.xml
+repository
