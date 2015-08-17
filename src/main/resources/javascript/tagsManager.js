@@ -15,10 +15,12 @@ function callWorkInProgress(){
 }
 
 function bbRenameTag(oldName) {
+
     bootbox.dialog({
+        show: false,
         title: "<h3>" + jsVarMap.labelRename + " : " + oldName + "<h3>",
         message: "<p>" + jsVarMap.labelTagNewName +
-                 "</p><input id='renameTag' class='typeahead' type='text' value='" + _.escape(oldName) + "'>" +
+                 "</p><input id='renameTag' class='typeahead' type='text' value='" + _.escape(oldName) + "' autofocus>" +
                  "<script>" +
                      "$('.modal-body').css('overflow', 'visible');" +
                      "$('#renameTag').keyup(function() {" +
@@ -53,7 +55,12 @@ function bbRenameTag(oldName) {
                 }
             }
         }
-    });
+    })
+        .off("shown.bs.modal")
+        .on("shown.bs.modal", function () {
+            $("#renameTag").focus();
+        })
+        .modal("show");
 }
 
 function bbDeleteTag(selectedTag) {
