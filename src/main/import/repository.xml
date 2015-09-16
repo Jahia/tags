@@ -36,19 +36,6 @@
                             <tagsManager jcr:primaryType="jnt:tagsManager"/>
                         </pagecontent>
                     </tagsManager>
-                    <tagsManager_live j:applyOn="jnt:virtualsite"
-                                      j:defaultTemplate="false"
-                                      j:hiddenTemplate="true"
-                                      j:requiredPermissionNames="tagManager"
-                                      j:titleKey="jnt_tagsManager"
-                                      jcr:mixinTypes="jmix:rbTitle jmix:hiddenNode"
-                                      jcr:primaryType="jnt:contentTemplate">
-                        <pagecontent jcr:primaryType="jnt:contentList">
-                            <workspaceswitch jcr:primaryType="jnt:workspaceSwitch" workspace="live">
-                                <tagsManager jcr:primaryType="jnt:tagsManager"/>
-                            </workspaceswitch>
-                        </pagecontent>
-                    </tagsManager_live>
                 </site-settings-base>
             </templates>
         </tags>

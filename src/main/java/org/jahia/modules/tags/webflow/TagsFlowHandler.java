@@ -74,14 +74,14 @@ package org.jahia.modules.tags.webflow;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jackrabbit.util.Text;
 import org.jahia.api.Constants;
+import org.jahia.modules.tags.webflow.model.TagUsage;
+import org.jahia.modules.tags.webflow.model.TagUsages;
 import org.jahia.services.content.*;
 import org.jahia.services.query.ScrollableQuery;
 import org.jahia.services.query.ScrollableQueryCallback;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.filter.cache.ModuleCacheProvider;
-import org.jahia.services.tags.TagActionCallback;
 import org.jahia.services.tags.TaggingService;
-import org.jahia.services.uicomponents.bean.contentmanager.Repository;
 import org.jahia.utils.i18n.Messages;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,39 +117,55 @@ public class TagsFlowHandler implements Serializable {
     @Autowired
     private transient ModuleCacheProvider moduleCacheProvider;
 
+    private String workspace;
+
+    public void init() {
+        workspace = Constants.EDIT_WORKSPACE;
+    }
+
+    public void switchWorkspace() {
+        workspace = workspace.equals(Constants.EDIT_WORKSPACE) ? Constants.LIVE_WORKSPACE : Constants.EDIT_WORKSPACE;
+    }
+
     public Map<String, Integer> getTagsList(RenderContext renderContext) {
         try {
             JCRSessionWrapper session = renderContext.getMainResource().getNode().getSession();
-            String query = "SELECT * FROM [jmix:tagged] AS result WHERE ISDESCENDANTNODE(result, '" + JCRContentUtils.sqlEncode(renderContext.getSite().getPath()) + "') AND (result.[j:tagList] IS NOT NULL)";
-            QueryManager qm = session.getWorkspace().getQueryManager();
-            Query q = qm.createQuery(query, Query.JCR_SQL2);
-            ScrollableQuery scrollableQuery = new ScrollableQuery(500, q);
-
-            return scrollableQuery.execute(new ScrollableQueryCallback<Map<String, Integer>>() {
-                Map<String, Integer> result = new HashMap<String, Integer>();
-
+            final String sitePath = renderContext.getSite().getPath();
+            return JCRTemplate.getInstance().doExecute(session.getUser(), workspace, session.getLocale(), new JCRCallback<Map<String, Integer>>() {
                 @Override
-                public boolean scroll() throws RepositoryException {
-                    NodeIterator nodeIterator = stepResult.getNodes();
-                    while (nodeIterator.hasNext()) {
-                        JCRNodeWrapper nodeWrapper = (JCRNodeWrapper) nodeIterator.next();
-                        JCRValueWrapper[] tags = nodeWrapper.getProperty("j:tagList").getValues();
-                        for (JCRValueWrapper tag : tags) {
-                            String tagValue = tag.getString();
+                public Map<String, Integer> doInJCR(JCRSessionWrapper jcrSessionWrapper) throws RepositoryException {
+                    String query = "SELECT * FROM [jmix:tagged] AS result WHERE ISDESCENDANTNODE(result, '" + JCRContentUtils.sqlEncode(sitePath) + "') AND (result.[j:tagList] IS NOT NULL)";
+                    QueryManager qm = jcrSessionWrapper.getWorkspace().getQueryManager();
+                    Query q = qm.createQuery(query, Query.JCR_SQL2);
+                    ScrollableQuery scrollableQuery = new ScrollableQuery(500, q);
 
-                            if (result.containsKey(tagValue)) {
-                                result.put(tagValue, result.get(tagValue) + 1);
-                            } else {
-                                result.put(tagValue, 1);
+                    return scrollableQuery.execute(new ScrollableQueryCallback<Map<String, Integer>>() {
+                        Map<String, Integer> result = new HashMap<String, Integer>();
+
+                        @Override
+                        public boolean scroll() throws RepositoryException {
+                            NodeIterator nodeIterator = stepResult.getNodes();
+                            while (nodeIterator.hasNext()) {
+                                JCRNodeWrapper nodeWrapper = (JCRNodeWrapper) nodeIterator.next();
+                                JCRValueWrapper[] tags = nodeWrapper.getProperty("j:tagList").getValues();
+                                for (JCRValueWrapper tag : tags) {
+                                    String tagValue = tag.getString();
+
+                                    if (result.containsKey(tagValue)) {
+                                        result.put(tagValue, result.get(tagValue) + 1);
+                                    } else {
+                                        result.put(tagValue, 1);
+                                    }
+                                }
                             }
+                            return true;
                         }
-                    }
-                    return true;
-                }
 
-                @Override
-                protected Map<String, Integer> getResult() {
-                    return result;
+                        @Override
+                        protected Map<String, Integer> getResult() {
+                            return result;
+                        }
+                    });
                 }
             });
         } catch (RepositoryException e) {
@@ -204,27 +220,38 @@ public class TagsFlowHandler implements Serializable {
         }
     }
 
-    public Map<String, List<String>> getTagDetails(RenderContext renderContext, String selectedTag) {
-        Map<String, List<String>> tagDetails = new HashMap<String, List<String>>();
+    public TagUsages getTagDetails(final RenderContext renderContext, final String selectedTag) {
         try {
             JCRSessionWrapper session = renderContext.getMainResource().getNode().getSession();
+            final String sitePath = renderContext.getSite().getPath();
+            return JCRTemplate.getInstance().doExecute(session.getUser(), workspace, session.getLocale(), new JCRCallback<TagUsages>() {
+                @Override
+                public TagUsages doInJCR(JCRSessionWrapper jcrSessionWrapper) throws RepositoryException {
+                    TagUsages tagUsages = new TagUsages();
+                    tagUsages.setTag(selectedTag);
+                    String query = "SELECT * FROM [jmix:tagged] AS result WHERE ISDESCENDANTNODE(result, '" + sitePath + "') AND (result.[j:tagList] = '" + Text.escapeIllegalXpathSearchChars(selectedTag).replaceAll("'", "''") + "')";
+                    QueryManager qm = jcrSessionWrapper.getWorkspace().getQueryManager();
+                    Query q = qm.createQuery(query, Query.JCR_SQL2);
 
-            String query = "SELECT * FROM [jmix:tagged] AS result WHERE ISDESCENDANTNODE(result, '" + renderContext.getSite().getPath() + "') AND (result.[j:tagList] = '" + Text.escapeIllegalXpathSearchChars(selectedTag).replaceAll("'", "''") + "')";
-            QueryManager qm = session.getWorkspace().getQueryManager();
-            Query q = qm.createQuery(query, Query.JCR_SQL2);
+                    NodeIterator ni = q.execute().getNodes();
+                    while (ni.hasNext()) {
+                        JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
+                        JCRNodeWrapper displayableNode = JCRContentUtils.findDisplayableNode(node, renderContext);
+                        TagUsage tagUsage = new TagUsage();
+                        tagUsage.setTaggedNodePath(node.getPath());
+                        tagUsage.setTaggedNodeIdentifier(node.getIdentifier());
+                        tagUsage.setDisplayablePath(displayableNode != null ? displayableNode.getPath() : null);
+                        tagUsage.setDisplayableName(displayableNode != null ? displayableNode.getDisplayableName() : null);
+                        tagUsages.getUsages().add(tagUsage);
+                    }
 
-            NodeIterator ni = q.execute().getNodes();
-            List<String> nodeList = new ArrayList<String>();
-            while (ni.hasNext()) {
-                JCRNodeWrapper node = (JCRNodeWrapper) ni.nextNode();
-                nodeList.add(node.getIdentifier());
-            }
+                    return tagUsages;
+                }
+            });
 
-            tagDetails.put(selectedTag, nodeList);
-            return tagDetails;
         } catch (RepositoryException e) {
             logger.error("getTagDetails() cannot get tag '" + selectedTag + "' details");
-            return tagDetails;
+            return new TagUsages();
         }
     }
 
@@ -279,5 +306,9 @@ public class TagsFlowHandler implements Serializable {
 
     private JCRSessionWrapper getSystemSessionWorkspace(String selectedWorkspace) throws RepositoryException {
         return JCRSessionFactory.getInstance().getCurrentSystemSession(selectedWorkspace, Locale.ENGLISH, null);
+    }
+
+    public String getWorkspace() {
+        return workspace;
     }
 }

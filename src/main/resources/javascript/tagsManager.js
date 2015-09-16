@@ -93,3 +93,9 @@ function viewUsages(selectedTag) {
     $("#selectedTag").val(selectedTag);
     $("#formTagsManagement").submit();
 }
+
+function switchWorkspace() {
+    callWorkInProgress();
+    $("#eventInput").attr("name", "_eventId_switchWorkspace");
+    $("#formTagsManagement").submit();
+}

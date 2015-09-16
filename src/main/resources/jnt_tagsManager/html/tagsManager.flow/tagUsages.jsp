@@ -16,6 +16,7 @@
 <%--@elvariable id="scriptInfo" type="java.lang.String"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="workspace" type="java.lang.String"--%>
+<%--@elvariable id="tagDetails" type="org.jahia.modules.tags.webflow.model.TagUsages"--%>
 
 <template:addResources type="css" resources="admin-font-awesome-v4.2.0.min.css"/>
 <template:addResources type="css" resources="datatables/css/bootstrap-theme.css"/>
@@ -58,7 +59,7 @@
             limit: 10,
             remote: {
                 <c:choose>
-                <c:when test="${workspace eq 'default'}">
+                <c:when test="${flowHandler.workspace eq 'default'}">
                 url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
                 </c:when>
                 <c:otherwise>
@@ -93,14 +94,9 @@
     </script>
 </template:addResources>
 
-<c:forEach items="${tagDetails}" var="tag">
-    <c:set value="${tag.key}" var="currentTagName"/>
-    <c:set value="${tag.value}" var="currentTagValue"/>
-</c:forEach>
-
 <div class="row-fluid">
     <div class="span6">
-        <h3><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${currentTagName}"/><fmt:param value="${fn:length(currentTagValue)}"/><fmt:param value="${workspace}"/></fmt:message></h3>
+        <h3><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
         <button type="button" class="btn btn-primary pull-right" onclick="backToTagManager()">
@@ -147,33 +143,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${currentTagValue}" var="nodeId">
-                    <jcr:node var="currentNodeTag" uuid="${nodeId}"/>
+                <c:forEach items="${tagDetails.usages}" var="usage">
                     <tr>
                         <td>
-                            <c:set var="tagPage" value="${jcr:findDisplayableNode(currentNodeTag, renderContext)}"/>
-                            <c:if test="${not empty tagPage}">
+                            <c:if test="${not empty usage.displayablePath}">
                                 <i class="fa fa-external-link"></i>
                                 <c:choose>
-                                    <c:when test="${workspace eq 'default'}">
-                                        <a href="<c:url value="${url.basePreview}${tagPage.path}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                ${tagPage.displayableName}
+                                    <c:when test="${flowHandler.workspace eq 'default'}">
+                                        <a href="<c:url value="${url.basePreview}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
+                                                ${usage.displayableName}
                                         </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="<c:url value="${url.baseLive}${tagPage.path}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                ${tagPage.displayableName}
+                                        <a href="<c:url value="${url.baseLive}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
+                                                ${usage.displayablePath}
                                         </a>
                                     </c:otherwise>
                                 </c:choose>
                             </c:if>
                         </td>
                         <td>
-                                ${currentNodeTag.path}
+                                ${usage.taggedNodePath}
                         </td>
                         <td class="text-right">
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-danger" onclick="bbDeleteTag('${functions:escapeJavaScript(currentNodeTag.identifier)}')">
+                                <button type="button" class="btn btn-danger" onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
                                     <i class="fa fa-trash"></i>&nbsp;<fmt:message key="label.delete"/>
                                 </button>
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
@@ -181,7 +175,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="#" onclick="bbRenameTag('${functions:escapeJavaScript(currentNodeTag.identifier)}')">
+                                        <a href="#" onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
                                             <i class="fa fa-pencil"></i>&nbsp;<fmt:message key="label.rename"/>
                                         </a>
                                     </li>
@@ -198,7 +192,7 @@
 <div class="row-fluid hide">
     <form:form id="formTagManagement" action="${flowExecutionUrl}" method="post">
         <input type="hidden" id="eventInput" name="_eventId_">
-        <input id="selectedTag" type="hidden" name="selectedTag" value="${fn:escapeXml(currentTagName)}">
+        <input id="selectedTag" type="hidden" name="selectedTag" value="${fn:escapeXml(tagDetails.tag)}">
         <input type="hidden" id="nodeToUpdateId" name="nodeToUpdateId"/>
         <input type="hidden" id="tagNewName" name="tagNewName">
     </form:form>

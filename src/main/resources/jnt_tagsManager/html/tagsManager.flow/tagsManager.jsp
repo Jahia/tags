@@ -58,7 +58,7 @@
             limit: 10,
             remote: {
                 <c:choose>
-                <c:when test="${workspace eq 'default'}">
+                <c:when test="${flowHandler.workspace eq 'default'}">
                 url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
                 </c:when>
                 <c:otherwise>
@@ -96,21 +96,19 @@
 
 <div class="row-fluid">
     <div class="span6">
-        <h3><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${workspace}"/></fmt:message></h3>
+        <h3><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
-        <c:choose>
-            <c:when test="${workspace eq 'default'}">
-                <a class="btn btn-primary pull-right" href="<c:url value="${url.baseEdit}${renderContext.siteInfo.sitePath}.tagsManager_live.html"/>">
+        <button type="button" class="btn btn-primary pull-right" onclick="switchWorkspace()">
+            <c:choose>
+                <c:when test="${flowHandler.workspace eq 'default'}">
                     <fmt:message key="jnt_tagsManager.button.switchToDefault"/>&nbsp;<i class="fa fa-external-link"></i>
-                </a>
-            </c:when>
-            <c:otherwise>
-                <a class="btn btn-primary pull-right" href="<c:url value="${url.baseEdit}${renderContext.siteInfo.sitePath}.tagsManager.html"/>">
+                </c:when>
+                <c:otherwise>
                     <fmt:message key="jnt_tagsManager.button.switchToLive"/>&nbsp;<i class="fa fa-external-link"></i>
-                </a>
-            </c:otherwise>
-        </c:choose>
+                </c:otherwise>
+            </c:choose>
+        </button>
     </div>
 </div>
 <div class="box-1">
