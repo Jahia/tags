@@ -106,7 +106,7 @@ public class TagsFlowHandler implements Serializable {
 
     private static final Logger logger = getLogger(TagsFlowHandler.class);
 
-    public static List<String> workspaces = Arrays.asList(Constants.EDIT_WORKSPACE, Constants.LIVE_WORKSPACE);
+    public static final List<String> workspaces = Arrays.asList(Constants.EDIT_WORKSPACE, Constants.LIVE_WORKSPACE);
 
     @Autowired
     private transient TaggingService taggingService;
