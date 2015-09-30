@@ -156,7 +156,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <a href="<c:url value="${url.baseLive}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                ${usage.displayablePath}
+                                                ${usage.displayableName}
                                         </a>
                                     </c:otherwise>
                                 </c:choose>
