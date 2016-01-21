@@ -236,7 +236,9 @@ public class TagsFlowHandler implements Serializable {
                 for (String workspace : workspaces) {
                     try {
                         node = getSystemSessionWorkspace(renderContext, workspace).getNodeByIdentifier(nodeID);
-                        taggingService.renameTag(node, selectedTag, tagNewName);
+                        JCRSessionWrapper session = getSystemSessionWorkspace(workspace);
+                        Map<String, Set<String>> errors = taggingService.renameTagUnderPath(renderContext.getSite().getJCRLocalPath(), session, selectedTag, tagNewName,
+                                new TagManagerActionCallback(moduleCacheProvider, session));
                         node.getSession().save();
                     } catch (RepositoryException e) {
                         if (node != null) {
