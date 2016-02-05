@@ -236,10 +236,10 @@ public class TagsFlowHandler implements Serializable {
                 for (String workspace : workspaces) {
                     try {
                         node = getSystemSessionWorkspace(renderContext, workspace).getNodeByIdentifier(nodeID);
-                        JCRSessionWrapper session = getSystemSessionWorkspace(workspace);
-                        Map<String, Set<String>> errors = taggingService.renameTagUnderPath(renderContext.getSite().getJCRLocalPath(), session, selectedTag, tagNewName,
-                                new TagManagerActionCallback(moduleCacheProvider, session));
+                        taggingService.renameTag(node, selectedTag, tagNewName);
                         node.getSession().save();
+                        //Added as we had all event listeners previously disabled for tags.
+                        moduleCacheProvider.invalidate(node.getPath(), true);
                     } catch (RepositoryException e) {
                         if (node != null) {
                             messageContext.addMessage(new MessageBuilder().error().defaultText(Messages.getWithArgs("resources.JahiaTags", "jnt_tagsManager.error.rename", renderContext.getUILocale(), selectedTag, workspace, node.getPath())).build());
@@ -263,6 +263,8 @@ public class TagsFlowHandler implements Serializable {
                     node = getSystemSessionWorkspace(renderContext, workspace).getNodeByIdentifier(nodeID);
                     taggingService.untag(node, selectedTag);
                     node.getSession().save();
+                    //Added as we had all event listeners previously disabled for tags.
+                    moduleCacheProvider.invalidate(node.getPath(), true);
                 }catch (RepositoryException e) {
                     if (node != null) {
                         messageContext.addMessage(new MessageBuilder().error().defaultText(Messages.getWithArgs("resources.JahiaTags", "jnt_tagsManager.error.delete", renderContext.getUILocale(), selectedTag, workspace, node.getPath())).build());
