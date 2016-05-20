@@ -151,7 +151,7 @@ public class TagsFlowHandler implements Serializable {
             JCRObservationManager.setAllEventListenersDisabled(Boolean.TRUE);
             try {
                 for (String workspace : workspaces) {
-                    JCRSessionWrapper session = getSystemSessionWorkspace(workspace);
+                    final JCRSessionWrapper session = getSystemSessionWorkspace(renderContext, workspace);
                     Map<String, Set<String>> errors = taggingService.renameTagUnderPath(renderContext.getSite().getJCRLocalPath(), session, selectedTag, tagNewName,
                             new TagManagerActionCallback(moduleCacheProvider, session));
 
@@ -175,8 +175,8 @@ public class TagsFlowHandler implements Serializable {
         JCRObservationManager.setAllEventListenersDisabled(Boolean.TRUE);
         try {
             for (String workspace : workspaces) {
-                JCRSessionWrapper session = getSystemSessionWorkspace(workspace);
-                Map<String, Set<String>> errors = taggingService.deleteTagUnderPath(renderContext.getSite().getJCRLocalPath(), getSystemSessionWorkspace(workspace), selectedTag,
+                final JCRSessionWrapper session = getSystemSessionWorkspace(renderContext, workspace);
+                Map<String, Set<String>> errors = taggingService.deleteTagUnderPath(renderContext.getSite().getJCRLocalPath(), session, selectedTag,
                         new TagManagerActionCallback(moduleCacheProvider, session));
 
                 for (Map.Entry<String, Set<String>> entry : errors.entrySet()) {
@@ -278,10 +278,6 @@ public class TagsFlowHandler implements Serializable {
 
     private JCRSessionWrapper getSystemSessionWorkspace(RenderContext renderContext, String selectedWorkspace) throws RepositoryException {
         return sessionFactory.getCurrentSystemSession(selectedWorkspace, renderContext.getMainResourceLocale(), renderContext.getFallbackLocale());
-    }
-
-    private JCRSessionWrapper getSystemSessionWorkspace(String selectedWorkspace) throws RepositoryException {
-        return JCRSessionFactory.getInstance().getCurrentSystemSession(selectedWorkspace, Locale.ENGLISH, null);
     }
 
     public String getWorkspace() {
