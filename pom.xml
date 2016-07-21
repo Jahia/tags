@@ -52,7 +52,7 @@
         <version>7.1.0.0</version>
     </parent>
     <artifactId>tags</artifactId>
-	<version>7.1.4</version>
+	<version>7.1.5-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Jahia Tags</name>
     <description>This is the custom module (Jahia Tags) for running on a Jahia server.</description>
@@ -60,7 +60,7 @@
         <connection>scm:git:git@github.com:Jahia/tags.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/tags.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/tags.git</url>
-      <tag>7_1_4</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>
