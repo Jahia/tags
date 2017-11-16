@@ -37,6 +37,22 @@
                         </pagecontent>
                     </tagsManager>
                 </site-settings-base>
+                <site-settings-base-jahia-anthracite j:view="settingsBootstrap3GoogleMaterialStyle"
+                            jcr:mixinTypes="jmix:useUILocale"
+                            jcr:primaryType="jnt:template">
+                    <tagsManager-jahia-anthracite j:applyOn="jnt:virtualsite"
+                                 j:defaultTemplate="false"
+                                 j:hiddenTemplate="true"
+                                 j:requiredPermissionNames="tagManager"
+                                 j:titleKey="jnt_tagsManager"
+                                 j:icon="/modules/tags/templates/files/tagManager.png"
+                                 jcr:mixinTypes="jmix:rbTitle"
+                                 jcr:primaryType="jnt:contentTemplate">
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <tagsManager jcr:primaryType="jnt:tagsManager" jcr:mixinTypes="jmix:renderable" j:view="settingsBootstrap3GoogleMaterialStyle"/>
+                        </pagecontent>
+                    </tagsManager-jahia-anthracite>
+                </site-settings-base-jahia-anthracite>
             </templates>
         </tags>
     </modules>
