@@ -76,7 +76,7 @@
 
         $(document).ready(function () {
             $(document).ready(function () {
-                dataTablesSettings.init('tableTagsList', 100, [], true, null, [null, { "bSearchable": false }, { "bSearchable": false }]);
+                dataTablesSettings.init('tableTagsList', 100, null, null, null, [null, { "bSearchable": false }, { "bSearchable": false }]);
             });
 
             tagsSuggester.initialize();
