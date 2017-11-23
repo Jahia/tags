@@ -75,10 +75,12 @@
         });
 
         $(document).ready(function () {
-            $(document).ready(function () {
-                dataTablesSettings.init('tableTagsList', 100, null, null, null, [null, { "bSearchable": false }, { "bSearchable": false }]);
-            });
-
+            var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
+                null,
+                { "bSearchable": false },
+                { "bSearchable": false }
+            ]};
+            dataTablesSettings.init('tableTagsList', 100, null, null,dtOptions);
             tagsSuggester.initialize();
         });
 </script>

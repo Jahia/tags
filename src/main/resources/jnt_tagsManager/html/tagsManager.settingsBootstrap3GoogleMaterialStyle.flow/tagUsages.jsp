@@ -76,10 +76,12 @@
         });
 
         $(document).ready(function () {
-            $(document).ready(function () {
-                dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, [null, { "bSearchable": false }, { "bSearchable": false }]);
-            });
-
+            var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
+                null,
+                { "bSearchable": false },
+                { "bSearchable": false }
+            ]};
+            dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
             tagsSuggester.initialize();
         });
     </script>
