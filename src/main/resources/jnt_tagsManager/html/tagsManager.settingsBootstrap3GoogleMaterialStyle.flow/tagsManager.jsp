@@ -80,7 +80,7 @@
                 { "bSearchable": false },
                 { "bSearchable": false }
             ]};
-            dataTablesSettings.init('tableTagsList', 100, null, null,dtOptions);
+            dataTablesSettings.init('tableTagsList', 100, null, null, null, dtOptions);
             tagsSuggester.initialize();
         });
 </script>
