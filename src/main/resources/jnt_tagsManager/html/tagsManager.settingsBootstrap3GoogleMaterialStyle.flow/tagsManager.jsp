@@ -75,8 +75,8 @@
         });
 
         $(document).ready(function () {
-            var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
-                null,
+            var dtOptions = {"aoColumns": [ //accent sorting for col 1, disable search for col 2 and 3
+                { targets: 0, type: 'diacritics-neutralise' },
                 { "bSearchable": false },
                 { "bSearchable": false }
             ]};
