@@ -81,8 +81,8 @@
                     "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                     "iDisplayLength": 100,
                     "sPaginationType": "bootstrap",
-                    "aoColumns": [ //disable search for col 2 and 3
-                        null,
+                    "aoColumns": [ //accent sorting for col 1, disable search for col 2 and 3
+                        { targets: 0, type: 'diacritics-neutralise' },
                         { "bSearchable": false },
                         { "bSearchable": false }
                     ]
