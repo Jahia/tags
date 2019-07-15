@@ -91,39 +91,26 @@
     <h2><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
 
+<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+    <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-danger</c:when><c:otherwise>alert-success</c:otherwise></c:choose>" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${message.text}
+    </div>
+</c:forEach>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="btn-group">
-            <button type="button" class="btn btn-default btn-primary" onclick="backToTagManager()">
+            <button type="button" class="btn btn-default btn-primary btn-raised" onclick="backToTagManager()">
                 <fmt:message key="jnt_tagsManager.button.backToTagsList"/>
             </button>
         </div>
     </div>
 
-    <div class="panel-body"> 
+    <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                    <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-danger</c:when><c:otherwise>alert-success</c:otherwise></c:choose>" role="alert">
-                        <button type="button" class="close" data-dismiss="alert">
-                            &times;
-                        </button>
-                        <c:choose>
-                            <c:when test="${message.severity eq 'ERROR'}">
-                                <i class="fa fa-exclamation"></i>&nbsp;<strong><fmt:message key="label.error"/></strong>&nbsp;
-                            </c:when>
-                            <c:otherwise>
-                                <i class="fa fa-info"></i>&nbsp;
-                            </c:otherwise>
-                        </c:choose>
-                            ${message.text}
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-hover table-bordered table-striped" id="tableTagDetails">
+                <table class="table table-bordered table-striped" id="tableTagDetails">
                     <thead>
                     <tr>
                         <th>
@@ -160,21 +147,16 @@
                                 ${usage.taggedNodePath}
                             </td>
                             <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm btn-danger" onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
-                                        <fmt:message key="label.delete"/>
-                                    </button>
-                                    <button type="button" class="btn btn-default btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-caret-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a href="#" onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
-                                                <fmt:message key="label.rename"/>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <button type="button" class="btn btn-default btn-fab btn-fab-xs"
+                                        data-toggle="tooltip" data-container="body" data-title="<fmt:message key='label.rename'/>"
+                                        onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-fab btn-fab-xs"
+                                        data-toggle="tooltip" data-container="body" data-title="<fmt:message key='label.delete'/>"
+                                        onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                    <i class="material-icons">delete</i>
+                                </button>
                             </td>
                         </tr>
                     </c:forEach>
