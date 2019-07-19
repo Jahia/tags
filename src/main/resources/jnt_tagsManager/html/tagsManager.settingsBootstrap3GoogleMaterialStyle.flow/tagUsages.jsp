@@ -148,12 +148,14 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-default btn-fab btn-fab-xs"
-                                        data-toggle="tooltip" data-container="body" data-title="<fmt:message key='label.rename'/>"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
+                                        data-title="<fmt:message key='label.rename'/>"
                                         onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
                                     <i class="material-icons">edit</i>
                                 </button>
                                 <button type="button" class="btn btn-danger btn-fab btn-fab-xs"
-                                        data-toggle="tooltip" data-container="body" data-title="<fmt:message key='label.delete'/>"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
+                                        data-title="<fmt:message key='label.delete'/>"
                                         onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
                                     <i class="material-icons">delete</i>
                                 </button>

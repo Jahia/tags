@@ -140,19 +140,19 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-default btn-fab btn-fab-xs"
-                                        data-toggle="tooltip" data-container="body"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="viewTagUsages"
                                         data-title="<fmt:message key='jnt_tagsManager.label.viewUsages'/>"
                                         onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
                                     <i class="material-icons">notes</i>
                                 </button>
                                 <button type="button" class="btn btn-fab btn-fab-xs btn-default"
-                                        data-toggle="tooltip" data-container="body"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
                                         data-title="<fmt:message key='label.rename'/>"
                                         onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
                                     <i class="material-icons">edit</i>
                                 </button>
                                 <button type="button" class="btn btn-fab btn-fab-xs btn-danger"
-                                        data-toggle="tooltip" data-container="body"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
                                         data-title="<fmt:message key='label.delete'/>"
                                         onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
                                     <i class="material-icons">delete</i>
