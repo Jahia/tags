@@ -17,7 +17,6 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="workspace" type="java.lang.String"--%>
 
-<template:addResources type="css" resources="admin-font-awesome-v4.2.0.min.css"/>
 <template:addResources type="css" resources="datatables/css/bootstrap-theme.css"/>
 <template:addResources type="css" resources="typeahead.css"/>
 
@@ -90,9 +89,16 @@
     <h2><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
 
+<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+    <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-error</c:when><c:otherwise>alert-success</c:otherwise></c:choose>">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${message.text}
+    </div>
+</c:forEach>
+
 <div class="panel panel-default">
     <div class="panel-heading">
-        <button type="button" class="btn btn-primary pull-right" onclick="switchWorkspace()">
+        <button type="button" class="btn btn-default btn-raised pull-right" onclick="switchWorkspace()">
             <c:choose>
                 <c:when test="${flowHandler.workspace eq 'default'}">
                     <fmt:message key="jnt_tagsManager.button.switchToDefault"/></i>
@@ -104,88 +110,67 @@
         </button>
     </div>
 
-    <div class="panel-body"> 
+    <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-error</c:when><c:otherwise>alert-success</c:otherwise></c:choose>">
-                    <button type="button" class="close" data-dismiss="alert">
-                        &times;
-                    </button>
-                    <c:choose>
-                        <c:when test="${message.severity eq 'ERROR'}">
-                            <i class="fa fa-exclamation"></i>&nbsp;<strong><fmt:message key="label.error"/></strong>&nbsp;
-                        </c:when>
-                        <c:otherwise>
-                            <i class="fa fa-info"></i>&nbsp;
-                        </c:otherwise>
-                    </c:choose>
-                    ${message.text}
-                </div>
-            </c:forEach>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-striped table-hover" id="tableTagsList">
-                <thead>
-                <tr>
-                    <th>
-                        <fmt:message key="jnt_tagsManager.label.tag"/>
-                    </th>
-                    <th width="15%">
-                        <fmt:message key="jnt_tagsManager.label.occurrences"/>
-                    </th>
-                    <th width="25%">
-                        <fmt:message key="label.actions"/>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:set scope="page" var="totalTags" value="0"/>
-                <c:forEach items="${tagsList}" var="tag" varStatus="tagsListIndex">
-                    <c:set var="totalTags" value="${totalTags+tag.value}"/>
+                <table class="table table-bordered table-striped" id="tableTagsList">
+                    <thead>
                     <tr>
-                        <td>
-                            ${tag.key}
-                        </td>
-                        <td>
-                            ${tag.value}
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm btn-primary" onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
-                                    <fmt:message key="jnt_tagsManager.label.viewUsages"/>
-                                </button>
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
-                                            <fmt:message key="label.rename"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" class="text-danger" onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
-                                            <fmt:message key="label.delete"/>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
+                        <th>
+                            <fmt:message key="jnt_tagsManager.label.tag"/>
+                        </th>
+                        <th width="15%">
+                            <fmt:message key="jnt_tagsManager.label.occurrences"/>
+                        </th>
+                        <th width="25%">
+                            <fmt:message key="label.actions"/>
+                        </th>
                     </tr>
-                </c:forEach>
-                    </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                    <c:set scope="page" var="totalTags" value="0"/>
+                    <c:forEach items="${tagsList}" var="tag" varStatus="tagsListIndex">
+                        <c:set var="totalTags" value="${totalTags+tag.value}"/>
+                        <tr>
+                            <td>
+                                ${tag.key}
+                            </td>
+                            <td>
+                                ${tag.value}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-fab btn-fab-xs"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="viewTagUsages"
+                                        data-title="<fmt:message key='jnt_tagsManager.label.viewUsages'/>"
+                                        onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                    <i class="material-icons">notes</i>
+                                </button>
+                                <button type="button" class="btn btn-fab btn-fab-xs btn-default"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
+                                        data-title="<fmt:message key='label.rename'/>"
+                                        onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button type="button" class="btn btn-fab btn-fab-xs btn-danger"
+                                        data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
+                                        data-title="<fmt:message key='label.delete'/>"
+                                        onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row hide">
-        <form:form id="formTagsManagement" action="${flowExecutionUrl}" method="post">
-            <input type="hidden" id="eventInput" name="_eventId_">
-            <input type="hidden" id="selectedTag" name="selectedTag">
-            <input type="hidden" id="tagNewName" name="tagNewName">
-        </form:form>
+        <div class="row hide">
+            <form:form id="formTagsManagement" action="${flowExecutionUrl}" method="post">
+                <input type="hidden" id="eventInput" name="_eventId_">
+                <input type="hidden" id="selectedTag" name="selectedTag">
+                <input type="hidden" id="tagNewName" name="tagNewName">
+            </form:form>
+        </div>
     </div>
 </div>

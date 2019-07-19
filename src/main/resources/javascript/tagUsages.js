@@ -22,7 +22,7 @@ function backToTagManager() {
 
 function bbRenameTag(nodeID) {
     bootbox.dialog({
-        title: "<h3>" + jsVarMap.labelRename + " : " + $('#selectedTag').val() + "<h3>",
+        title: "<h4>" + jsVarMap.labelRename + " : " + $('#selectedTag').val() + "</h4>",
         message: "<p>" + jsVarMap.labelTagNewName +
             "</p><input id='renameTag' class='typeahead' type='text' value='" + _.escape($('#selectedTag').val()) + "'>" +
             "<script>" +
@@ -49,7 +49,7 @@ function bbRenameTag(nodeID) {
             },
             success: {
                 label: jsVarMap.labelRename,
-                className: "btn-primary renameButton",
+                className: "btn-primary btn-raised renameButton",
                 callback: function() {
                     callWorkInProgress();
                     $("#eventInput").attr("name", "_eventId_renameTagOnNode");
@@ -64,7 +64,7 @@ function bbRenameTag(nodeID) {
 
 function bbDeleteTag(nodeID) {
     bootbox.dialog({
-        title: "<h3>" + jsVarMap.labelDelete + " : " + $('#selectedTag').val() + "<h3>",
+        title: "<h4>" + jsVarMap.labelDelete + " : " + $('#selectedTag').val() + "</h4>",
         message: "<p>" + jsVarMap.modalDelete + "</p>",
         buttons: {
             danger: {
@@ -74,7 +74,7 @@ function bbDeleteTag(nodeID) {
             },
             success: {
                 label: jsVarMap.labelDelete,
-                className: "btn-danger",
+                className: "btn-danger btn-raised",
                 callback: function() {
                     callWorkInProgress();
                     $("#eventInput").attr("name", "_eventId_deleteTagOnNode");
