@@ -32,7 +32,7 @@
         <c:if test="${edit && empty currentNode.properties.resultPage}"><p><fmt:message key="warn.no.searchResultPage"/></p></c:if>
 
     <query:definition var="listQuery" scope="request">
-        <query:selector nodeTypeName="nt:base"/>
+        <query:selector nodeTypeName="jmix:tagged"/>
         <query:descendantNode path="${currentNode.properties['relative'].boolean ? boundComponent.path : renderContext.site.path}"/>
         <query:column columnName="rep:facet(nodetype=jmix:tagged&key=j:tagList&facet.mincount=${usageThreshold}&facet.limit=${numberOfTagsLimit}&facet.sort=true)" propertyName="j:tagList"/>
     </query:definition>
