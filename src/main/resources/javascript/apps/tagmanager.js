@@ -1,7 +1,7 @@
 window.jahia.i18n.loadNamespaces('tags');
 
 window.jahia.uiExtender.registry.add('adminRoute', 'tagsmanager', {
-    targets: ['jcontent'],
+    targets: ['jcontent:20'],
     label: 'tags:label.title',
     icon: null,
     isSelectable: true,
