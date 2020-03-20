@@ -5,6 +5,7 @@ window.jahia.uiExtender.registry.add('adminRoute', 'tagsmanager', {
     label: 'tags:label.title',
     icon: null,
     isSelectable: true,
+    requiredPermission: 'tagManager',
     requireModuleInstalledOnSite: 'tags',
-    iframeUrl: window.contextJsParameters.contextPath + '/cms/editframe/default/en/sites/$site-key.tagsManager.html'
+    iframeUrl: window.contextJsParameters.contextPath + '/cms/editframe/default/$lang/sites/$site-key.tagsManager.html'
 });
