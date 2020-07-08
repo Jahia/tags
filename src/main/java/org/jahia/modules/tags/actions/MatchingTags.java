@@ -71,7 +71,7 @@ public class MatchingTags extends BaseTagAction{
         String path = getParameter(parameters, "path", renderContext.getSite().getPath());
         String limitStr = getParameter(parameters, "limit");
         Long limit = StringUtils.isNotEmpty(limitStr) ? Long.valueOf(limitStr) : 10l;
-        Map<String, Long> tags = taggingService.getTagsSuggester().suggest(prefix, path, 1l, limit, 0l, true, session);
+        Map<String, Long> tags = taggingService.getTagsSuggester().suggest(prefix, /*JCRContentUtils.sqlEncode(*/path/*)*/, 1l, limit, 0l, true, session);
         JSONObject result = new JSONObject();
         JSONArray tagsJSON = new JSONArray();
         for(String tag : tags.keySet()){

@@ -50,7 +50,7 @@
     <parent>
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
-        <version>8.0.0.0</version>
+        <version>8.0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>tags</artifactId>
@@ -69,7 +69,7 @@
     <properties>
         <jahia-depends>default,siteSettings</jahia-depends>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MC0CFEmU9WDnhzDHVA673WgjyJw1QgO7AhUAg4sTMg9xzE3m+Yj6GhVVo3bx4Eg=</jahia-module-signature>
+        <jahia-module-signature>MCwCFFNcMNORi4asEmYLAokE3Sf7R4KOAhQd+sNcQ08of7NiYqqsnZZMqOSLzg==</jahia-module-signature>
     </properties>
 
     <repositories>
