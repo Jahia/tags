@@ -3,11 +3,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean class="org.jahia.modules.tags.actions.RemoveTag" parent="BaseTagAction" />
+    <bean class="org.jahia.modules.tags.actions.RemoveTag" parent="BaseTagAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
-    <bean class="org.jahia.modules.tags.actions.AddTag" parent="BaseTagAction" />
+    <bean class="org.jahia.modules.tags.actions.AddTag" parent="BaseTagAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
-    <bean class="org.jahia.modules.tags.actions.MatchingTags" parent="BaseTagAction" />
+    <bean class="org.jahia.modules.tags.actions.MatchingTags" parent="BaseTagAction">
+        <property name="requiredMethods" value="POST, GET"/>
+    </bean>
 
-    <bean class="org.jahia.modules.tags.actions.TransformTag" parent="BaseTagAction" />
+    <bean class="org.jahia.modules.tags.actions.TransformTag" parent="BaseTagAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 </beans>
