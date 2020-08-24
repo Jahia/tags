@@ -50,11 +50,11 @@
     <parent>
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
-        <version>8.0.1.0-SNAPSHOT</version>
+        <version>8.0.1.0</version>
     </parent>
 
     <artifactId>tags</artifactId>
-    <version>8.1.0-SNAPSHOT</version>
+    <version>8.1.0</version>
     <packaging>bundle</packaging>
     <name>Jahia Tags</name>
     <description>This is the custom module (Jahia Tags) for running on a Jahia server.</description>
@@ -63,7 +63,7 @@
         <connection>scm:git:git@github.com:Jahia/tags.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/tags.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/tags.git</url>
-        <tag>HEAD</tag>
+        <tag>8_1_0</tag>
     </scm>
 
     <properties>
