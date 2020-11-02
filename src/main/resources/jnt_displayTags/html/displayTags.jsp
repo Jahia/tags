@@ -32,18 +32,24 @@
                 </form>
             </template:tokenizedForm>
             <script type="text/javascript">
-                function deleteTag_${fn:replace(boundComponent.identifier, "-", "_")} (htmlDeleteLink) {
-                    var tagItem = $(htmlDeleteLink).parent();
-                    var tag = htmlDeleteLink.dataset.tag;
-                    $.post("<c:url value="${url.base}${boundComponent.path}"/>.removeTag.do", {"tag":tag, "unescape":true, "form-token": $('#deleteTagForm_${fn:replace(boundComponent.identifier, "-", "_")}').find("input[name='form-token']").val()}, function(result) {
-                        tagItem.hide();
-                        if(result.size == "0"){
-                            var spanNotYetTag = $('<span><fmt:message key="label.tags.notag"/></span>').attr('class', 'notaggeditem${boundComponent.identifier}');
-                            $("#jahia-tags-${boundComponent.identifier}").append(spanNotYetTag)
-                        }
-                    }, "json");
-                    return false;
-                }
+                $(document).ready(function () {
+                    var deleteTags = document.getElementsByClassName("delete");
+                    for (var i = 0; i < deleteTags.length; i++) {
+                        deleteTags[i].addEventListener("click", function (e) {
+                            var htmlDeleteLink = e.currentTarget;
+                            var tagItem = $(htmlDeleteLink).parent();
+                            var tag = htmlDeleteLink.dataset.tag;
+                            $.post("<c:url value="${url.base}${boundComponent.path}"/>.removeTag.do", {"tag":tag, "unescape":true, "form-token": $('#deleteTagForm_${fn:replace(boundComponent.identifier, "-", "_")}').find("input[name='form-token']").val()}, function(result) {
+                                tagItem.hide();
+                                if(result.size === "0"){
+                                    var spanNotYetTag = $('<span><fmt:message key="label.tags.notag"/></span>').attr('class', 'notaggeditem${boundComponent.identifier}');
+                                    $("#jahia-tags-${boundComponent.identifier}").append(spanNotYetTag)
+                                }
+                            }, "json");
+                            return false;
+                        });
+                    }
+                });
             </script>
         </c:if>
         <div class="tagged">
@@ -55,8 +61,7 @@
                             <div style="display:inline;">
                                 <span class="taggeditem">${fn:escapeXml(tag.string)}</span>
                                 <c:if test="${not nodeLocked}">
-                                    <a class="delete" onclick="deleteTag_${fn:replace(boundComponent.identifier, "-", "_")} (this); return false;"
-                                       data-tag="${fn:escapeXml(tag.string)}" href="#"></a>${!status.last ? separator : ''}
+                                    <a class="delete" data-tag="${fn:escapeXml(tag.string)}" href="#"></a>${!status.last ? separator : ''}
                                 </c:if>
                             </div>
                         </c:forEach>

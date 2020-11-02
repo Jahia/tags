@@ -90,6 +90,10 @@
             });
 
             tagsSuggester.initialize();
+            document.getElementById("backToList").addEventListener("click", function() {
+                backToTagManager();
+            });
+            attachRenameAndDeleteListeners();
         });
     </script>
 </template:addResources>
@@ -99,7 +103,7 @@
         <h3><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
-        <button type="button" class="btn btn-primary pull-right" onclick="backToTagManager()">
+        <button type="button" class="btn btn-primary pull-right" id="backToList">
             <i class="fa fa-home"></i>&nbsp;<fmt:message key="jnt_tagsManager.button.backToTagsList"/>
         </button>
     </div>
@@ -167,7 +171,7 @@
                         </td>
                         <td class="text-right">
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-danger" onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                <button type="button" class="btn btn-danger deleteTagButton" id="delete_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                     <i class="fa fa-trash"></i>&nbsp;<fmt:message key="label.delete"/>
                                 </button>
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
@@ -175,7 +179,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="#" onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                        <a href="#" class="renameTagButton" id="rename_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                             <i class="fa fa-pencil"></i>&nbsp;<fmt:message key="label.rename"/>
                                         </a>
                                     </li>

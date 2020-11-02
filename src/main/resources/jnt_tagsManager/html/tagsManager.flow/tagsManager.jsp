@@ -90,6 +90,9 @@
             });
 
             tagsSuggester.initialize();
+            attachWorkspaceSwitch()
+            attachRenameAndDeleteListeners();
+            attachViewUsagesListeners();
         });
     </script>
 </template:addResources>
@@ -99,7 +102,7 @@
         <h3><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
-        <button type="button" class="btn btn-primary pull-right" onclick="switchWorkspace()">
+        <button type="button" class="btn btn-primary pull-right" id="wsSwitch">
             <c:choose>
                 <c:when test="${flowHandler.workspace eq 'default'}">
                     <fmt:message key="jnt_tagsManager.button.switchToDefault"/>&nbsp;<i class="fa fa-external-link"></i>
@@ -161,7 +164,7 @@
                         </td>
                         <td>
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-primary" onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                <button type="button" class="btn btn-primary viewUsageButton" id="usage_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                     <i class="fa fa-search"></i>&nbsp;<fmt:message key="jnt_tagsManager.label.viewUsages"/>
                                 </button>
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -169,12 +172,12 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        <a href="#" class="renameTagButton" id="rename_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                             <i class="fa fa-pencil"></i>&nbsp;<fmt:message key="label.rename"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="text-danger" onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        <a href="#" class="text-danger deleteTagButton" id="delete_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                             <i class="fa fa-trash"></i>&nbsp;<fmt:message key="label.delete"/>
                                         </a>
                                     </li>

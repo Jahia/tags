@@ -83,6 +83,12 @@
             ]};
             dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
             tagsSuggester.initialize();
+
+            document.getElementById("backToTagList").addEventListener("click", function() {
+                backToTagManager();
+            });
+
+            attachRenameAndDeleteListeners();
         });
     </script>
 </template:addResources>
@@ -101,7 +107,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="btn-group">
-            <button type="button" class="btn btn-default btn-primary btn-raised" onclick="backToTagManager()">
+            <button type="button" class="btn btn-default btn-primary btn-raised" id="backToTagList">
                 <fmt:message key="jnt_tagsManager.button.backToTagsList"/>
             </button>
         </div>
@@ -147,16 +153,16 @@
                                 ${usage.taggedNodePath}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default btn-fab btn-fab-xs"
+                                <button type="button" class="btn btn-default btn-fab btn-fab-xs renameTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
                                         data-title="<fmt:message key='label.rename'/>"
-                                        onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                        id="rename_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                     <i class="material-icons">edit</i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-fab btn-fab-xs"
+                                <button type="button" class="btn btn-danger btn-fab btn-fab-xs deleteTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
                                         data-title="<fmt:message key='label.delete'/>"
-                                        onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                        id="delete_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </td>

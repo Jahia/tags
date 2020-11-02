@@ -85,3 +85,34 @@ function bbDeleteTag(nodeID) {
         }
     });
 }
+
+function attachRenameAndDeleteListeners() {
+    var renameButtons = document.getElementsByClassName("renameTagButton");
+    for (var i = 0; i < renameButtons.length; i++) {
+        renameButtons[i].addEventListener("click", function(e) {
+            bbRenameTag(e.currentTarget.id.replace("rename_", ""));
+        });
+    }
+
+    var deleteButtons = document.getElementsByClassName("deleteTagButton");
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener("click", function(e) {
+            bbDeleteTag(e.currentTarget.id.replace("delete_", ""));
+        });
+    }
+}
+
+function attachViewUsagesListeners() {
+    var usageButtons = document.getElementsByClassName("viewUsageButton");
+    for (var i = 0; i < usageButtons.length; i++) {
+        usageButtons[i].addEventListener("click", function(e) {
+            viewUsages(e.currentTarget.id.replace("usage_", ""));
+        });
+    }
+}
+
+function attachWorkspaceSwitch() {
+    document.getElementById("wsSwitch").addEventListener("click", function () {
+        switchWorkspace();
+    })
+}
