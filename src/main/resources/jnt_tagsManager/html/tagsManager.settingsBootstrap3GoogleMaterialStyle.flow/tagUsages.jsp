@@ -39,59 +39,57 @@
 <fmt:message key="jnt_tagsManager.modal.rename" var="modalRename"/>
 <fmt:message key="jnt_tagsManager.modal.delete" var="modalDelete"/>
 
-<template:addResources type="inlinejavascript">
-    <script>
-        var jsVarMap = {
-            labelCancel: '${functions:escapeJavaScript(labelCancel)}',
-            labelOk: '${functions:escapeJavaScript(labelOk)}',
-            labelRename: '${functions:escapeJavaScript(labelRename)}',
-            labelDelete: '${functions:escapeJavaScript(labelDelete)}',
-            i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
-            labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
-            modalRename: '${functions:escapeJavaScript(modalRename)}',
-            modalDelete: '${functions:escapeJavaScript(modalDelete)}'
-        };
+<script type="text/javascript">
+    var jsVarMap = {
+        labelCancel: '${functions:escapeJavaScript(labelCancel)}',
+        labelOk: '${functions:escapeJavaScript(labelOk)}',
+        labelRename: '${functions:escapeJavaScript(labelRename)}',
+        labelDelete: '${functions:escapeJavaScript(labelDelete)}',
+        i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
+        labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
+        modalRename: '${functions:escapeJavaScript(modalRename)}',
+        modalDelete: '${functions:escapeJavaScript(modalDelete)}'
+    };
 
-        var tagsSuggester = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            limit: 10,
-            remote: {
-                <c:choose>
-                <c:when test="${flowHandler.workspace eq 'default'}">
-                url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:when>
-                <c:otherwise>
-                url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:otherwise>
-                </c:choose>
-                filter: function (list) {
-                    return $.map(list.tags, function (tag) {
-                        return {
-                            "value": tag.name
-                        };
-                    });
-                }
+    var tagsSuggester = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
+        remote: {
+            <c:choose>
+            <c:when test="${flowHandler.workspace eq 'default'}">
+            url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:when>
+            <c:otherwise>
+            url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:otherwise>
+            </c:choose>
+            filter: function (list) {
+                return $.map(list.tags, function (tag) {
+                    return {
+                        "value": tag.name
+                    };
+                });
             }
+        }
+    });
+
+    $(document).ready(function () {
+        var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
+            null,
+            { "bSearchable": false },
+            { "bSearchable": false }
+        ]};
+        dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
+        tagsSuggester.initialize();
+
+        document.getElementById("backToTagList").addEventListener("click", function() {
+            backToTagManager();
         });
 
-        $(document).ready(function () {
-            var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
-                null,
-                { "bSearchable": false },
-                { "bSearchable": false }
-            ]};
-            dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
-            tagsSuggester.initialize();
-
-            document.getElementById("backToTagList").addEventListener("click", function() {
-                backToTagManager();
-            });
-
-            attachRenameAndDeleteListeners();
-        });
-    </script>
-</template:addResources>
+        attachRenameAndDeleteListeners();
+    });
+</script>
 
 <div class="page-header">
     <h2><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>

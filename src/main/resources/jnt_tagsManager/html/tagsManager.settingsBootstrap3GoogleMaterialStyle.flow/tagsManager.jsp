@@ -27,7 +27,6 @@
 <template:addResources type="javascript" resources="underscore.min.js"/>
 <template:addResources type="javascript" resources="typeahead.min.js"/>
 <template:addResources type="javascript" resources="tagsManager.js"/>
-<template:addResources type="javascript" resources="tagUsages.js"/>
 
 <fmt:message key="label.cancel" var="labelCancel"/>
 <fmt:message key="label.ok" var="labelOk"/>
@@ -38,8 +37,7 @@
 <fmt:message key="jnt_tagsManager.modal.renameAll" var="modalRenameAll"/>
 <fmt:message key="jnt_tagsManager.modal.deleteAll" var="modalDeleteAll"/>
 
-<template:addResources type="inlinejavascript">
-    <script>
+<script type="text/javascript">
         var jsVarMap = {
             labelCancel: '${functions:escapeJavaScript(labelCancel)}',
             labelOk: '${functions:escapeJavaScript(labelOk)}',
@@ -87,7 +85,7 @@
             attachViewUsagesListeners();
         });
 </script>
-</template:addResources>
+ddddd
 <div class="page-header">
     <h2><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
