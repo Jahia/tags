@@ -39,53 +39,57 @@
 <fmt:message key="jnt_tagsManager.modal.rename" var="modalRename"/>
 <fmt:message key="jnt_tagsManager.modal.delete" var="modalDelete"/>
 
-<template:addResources type="inlinejavascript">
-    <script>
-        var jsVarMap = {
-            labelCancel: '${functions:escapeJavaScript(labelCancel)}',
-            labelOk: '${functions:escapeJavaScript(labelOk)}',
-            labelRename: '${functions:escapeJavaScript(labelRename)}',
-            labelDelete: '${functions:escapeJavaScript(labelDelete)}',
-            i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
-            labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
-            modalRename: '${functions:escapeJavaScript(modalRename)}',
-            modalDelete: '${functions:escapeJavaScript(modalDelete)}'
-        };
+<script type="text/javascript">
+    var jsVarMap = {
+        labelCancel: '${functions:escapeJavaScript(labelCancel)}',
+        labelOk: '${functions:escapeJavaScript(labelOk)}',
+        labelRename: '${functions:escapeJavaScript(labelRename)}',
+        labelDelete: '${functions:escapeJavaScript(labelDelete)}',
+        i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
+        labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
+        modalRename: '${functions:escapeJavaScript(modalRename)}',
+        modalDelete: '${functions:escapeJavaScript(modalDelete)}'
+    };
 
-        var tagsSuggester = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            limit: 10,
-            remote: {
-                <c:choose>
-                <c:when test="${flowHandler.workspace eq 'default'}">
-                url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:when>
-                <c:otherwise>
-                url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:otherwise>
-                </c:choose>
-                filter: function (list) {
-                    return $.map(list.tags, function (tag) {
-                        return {
-                            "value": tag.name
-                        };
-                    });
-                }
+    var tagsSuggester = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
+        remote: {
+            <c:choose>
+            <c:when test="${flowHandler.workspace eq 'default'}">
+            url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:when>
+            <c:otherwise>
+            url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:otherwise>
+            </c:choose>
+            filter: function (list) {
+                return $.map(list.tags, function (tag) {
+                    return {
+                        "value": tag.name
+                    };
+                });
             }
+        }
+    });
+
+    $(document).ready(function () {
+        var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
+            null,
+            { "bSearchable": false },
+            { "bSearchable": false }
+        ]};
+        dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
+        tagsSuggester.initialize();
+
+        document.getElementById("backToTagList").addEventListener("click", function() {
+            backToTagManager();
         });
 
-        $(document).ready(function () {
-            var dtOptions = {"aoColumns": [ //disable search for col 2 and 3
-                null,
-                { "bSearchable": false },
-                { "bSearchable": false }
-            ]};
-            dataTablesSettings.init('tableTagDetails', 100, [[1, 'asc']], true, null, dtOptions);
-            tagsSuggester.initialize();
-        });
-    </script>
-</template:addResources>
+        attachRenameAndDeleteListeners();
+    });
+</script>
 
 <div class="page-header">
     <h2><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
@@ -101,7 +105,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="btn-group">
-            <button type="button" class="btn btn-default btn-primary btn-raised" onclick="backToTagManager()">
+            <button type="button" class="btn btn-default btn-primary btn-raised" id="backToTagList">
                 <fmt:message key="jnt_tagsManager.button.backToTagsList"/>
             </button>
         </div>
@@ -147,16 +151,16 @@
                                 ${usage.taggedNodePath}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default btn-fab btn-fab-xs"
+                                <button type="button" class="btn btn-default btn-fab btn-fab-xs renameTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
                                         data-title="<fmt:message key='label.rename'/>"
-                                        onclick="bbRenameTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                        id="rename_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                     <i class="material-icons">edit</i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-fab btn-fab-xs"
+                                <button type="button" class="btn btn-danger btn-fab btn-fab-xs deleteTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
                                         data-title="<fmt:message key='label.delete'/>"
-                                        onclick="bbDeleteTag('${functions:escapeJavaScript(usage.taggedNodeIdentifier)}')">
+                                        id="delete_${functions:escapeJavaScript(usage.taggedNodeIdentifier)}">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </td>

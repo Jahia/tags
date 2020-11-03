@@ -44,20 +44,20 @@
                     return parsed;
                 }
             });
-        });
 
-        function addTag_${fn:replace(boundComponent.identifier, "-", "_")} (inputSelector) {
-            var separator = ',';
-            var $this = $(inputSelector);
-            if ($this.val().length > 0) {
-                var options = {
-                    url: "<c:url value="${url.base}${boundComponent.path}"/>.addTag.do",
-                    type: "POST",
-                    dataType: "json",
-                    data: {tag: $this.val().split(','), "form-token": $this.parent().find("input[name='form-token']").val()},
-                    traditional: true
-                };
-                $.ajax(options)
+            document.getElementById("addTag").addEventListener("click", function() {
+                var inputSelector = ".newTagInput${currentNode.identifier}";
+                var separator = ',';
+                var $this = $(inputSelector);
+                if ($this.val().length > 0) {
+                    var options = {
+                        url: "<c:url value="${url.base}${boundComponent.path}"/>.addTag.do",
+                        type: "POST",
+                        dataType: "json",
+                        data: {tag: $this.val().split(','), "form-token": $this.parent().find("input[name='form-token']").val()},
+                        traditional: true
+                    };
+                    $.ajax(options)
                         .done(function (result) {
                             var tagContainer = jQuery('#jahia-tags-${boundComponent.identifier}');
                             if (result.addedTags && result.addedTags.length > 0) {
@@ -87,18 +87,16 @@
                             }
                         });
 
-            }
-            return false;
-        }
-
+                }
+            })
+        });
     </script>
     <c:if test="${renderContext.user.name != 'guest'}">
         <template:tokenizedForm allowsMultipleSubmits="true">
             <form action="<c:url value="${url.base}${boundComponent.path}"/>.addTag.do" method="post">
                 <label><fmt:message key="label.add.tags"/></label>
                 <input type="text" name="tag" class="newTagInput${currentNode.identifier}"/>
-                <input type="button" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button"
-                       onclick="addTag_${fn:replace(boundComponent.identifier, "-", "_")} ('.newTagInput${currentNode.identifier}');"/>
+                <input type="button" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button" id="addTag"/>
             </form>
         </template:tokenizedForm>
     </c:if>

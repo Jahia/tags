@@ -37,8 +37,7 @@
 <fmt:message key="jnt_tagsManager.modal.renameAll" var="modalRenameAll"/>
 <fmt:message key="jnt_tagsManager.modal.deleteAll" var="modalDeleteAll"/>
 
-<template:addResources type="inlinejavascript">
-    <script>
+<script type="text/javascript">
         var jsVarMap = {
             labelCancel: '${functions:escapeJavaScript(labelCancel)}',
             labelOk: '${functions:escapeJavaScript(labelOk)}',
@@ -81,10 +80,12 @@
             ]};
             dataTablesSettings.init('tableTagsList', 100, null, null, null, dtOptions);
             tagsSuggester.initialize();
+            attachWorkspaceSwitch();
+            attachRenameAndDeleteListeners();
+            attachViewUsagesListeners();
         });
 </script>
-</template:addResources>
-
+ddddd
 <div class="page-header">
     <h2><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
@@ -98,7 +99,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <button type="button" class="btn btn-default btn-raised pull-right" onclick="switchWorkspace()">
+        <button type="button" class="btn btn-default btn-raised pull-right" id="wsSwitch">
             <c:choose>
                 <c:when test="${flowHandler.workspace eq 'default'}">
                     <fmt:message key="jnt_tagsManager.button.switchToDefault"/></i>
@@ -139,22 +140,22 @@
                                 ${tag.value}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default btn-fab btn-fab-xs"
+                                <button type="button" class="btn btn-default btn-fab btn-fab-xs viewUsageButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="viewTagUsages"
                                         data-title="<fmt:message key='jnt_tagsManager.label.viewUsages'/>"
-                                        onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        id="usage_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                     <i class="material-icons">notes</i>
                                 </button>
-                                <button type="button" class="btn btn-fab btn-fab-xs btn-default"
+                                <button type="button" class="btn btn-fab btn-fab-xs btn-default renameTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="renameTag"
                                         data-title="<fmt:message key='label.rename'/>"
-                                        onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        id="rename_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                     <i class="material-icons">edit</i>
                                 </button>
-                                <button type="button" class="btn btn-fab btn-fab-xs btn-danger"
+                                <button type="button" class="btn btn-fab btn-fab-xs btn-danger deleteTagButton"
                                         data-toggle="tooltip" data-container="body" data-sel-role="deleteTag"
                                         data-title="<fmt:message key='label.delete'/>"
-                                        onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        id="delete_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </td>

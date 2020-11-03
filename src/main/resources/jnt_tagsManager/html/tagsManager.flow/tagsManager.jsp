@@ -39,67 +39,67 @@
 <fmt:message key="jnt_tagsManager.modal.renameAll" var="modalRenameAll"/>
 <fmt:message key="jnt_tagsManager.modal.deleteAll" var="modalDeleteAll"/>
 
-<template:addResources type="inlinejavascript">
-    <script>
-        var jsVarMap = {
-            labelCancel: '${functions:escapeJavaScript(labelCancel)}',
-            labelOk: '${functions:escapeJavaScript(labelOk)}',
-            labelRename: '${functions:escapeJavaScript(labelRename)}',
-            labelDelete: '${functions:escapeJavaScript(labelDelete)}',
-            i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
-            labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
-            modalRenameAll: '${functions:escapeJavaScript(modalRenameAll)}',
-            modalDeleteAll: '${functions:escapeJavaScript(modalDeleteAll)}'
-        };
+<script type="text/javascript">
+    var jsVarMap = {
+        labelCancel: '${functions:escapeJavaScript(labelCancel)}',
+        labelOk: '${functions:escapeJavaScript(labelOk)}',
+        labelRename: '${functions:escapeJavaScript(labelRename)}',
+        labelDelete: '${functions:escapeJavaScript(labelDelete)}',
+        i18nWaiting: '${functions:escapeJavaScript(i18nWaiting)}',
+        labelTagNewName: '${functions:escapeJavaScript(labelTagNewName)}',
+        modalRenameAll: '${functions:escapeJavaScript(modalRenameAll)}',
+        modalDeleteAll: '${functions:escapeJavaScript(modalDeleteAll)}'
+    };
 
-        var tagsSuggester = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            limit: 10,
-            remote: {
-                <c:choose>
-                <c:when test="${flowHandler.workspace eq 'default'}">
-                url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:when>
-                <c:otherwise>
-                url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
-                </c:otherwise>
-                </c:choose>
-                filter: function (list) {
-                    return $.map(list.tags, function (tag) {
-                        return {
-                            "value": tag.name
-                        };
-                    });
-                }
-            }
-        });
-
-        $(document).ready(function () {
-            $(document).ready(function () {
-                $('#tableTagsList').dataTable({
-                    "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-                    "iDisplayLength": 100,
-                    "sPaginationType": "bootstrap",
-                    "aoColumns": [ //accent sorting for col 1, disable search for col 2 and 3
-                        { targets: 0, type: 'diacritics-neutralise' },
-                        { "bSearchable": false },
-                        { "bSearchable": false }
-                    ]
+    var tagsSuggester = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
+        remote: {
+            <c:choose>
+            <c:when test="${flowHandler.workspace eq 'default'}">
+            url: '${url.context}${url.baseEdit}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:when>
+            <c:otherwise>
+            url: '${url.context}${url.baseLive}${renderContext.siteInfo.sitePath}.matchingTags.do' + '?q=%QUERY',
+            </c:otherwise>
+            </c:choose>
+            filter: function (list) {
+                return $.map(list.tags, function (tag) {
+                    return {
+                        "value": tag.name
+                    };
                 });
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#tableTagsList').dataTable({
+                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                "iDisplayLength": 100,
+                "sPaginationType": "bootstrap",
+                "aoColumns": [ //accent sorting for col 1, disable search for col 2 and 3
+                    { targets: 0, type: 'diacritics-neutralise' },
+                    { "bSearchable": false },
+                    { "bSearchable": false }
+                ]
             });
-
-            tagsSuggester.initialize();
         });
-    </script>
-</template:addResources>
 
+        tagsSuggester.initialize();
+        attachWorkspaceSwitch();
+        attachRenameAndDeleteListeners();
+        attachViewUsagesListeners();
+    });
+</script>
 <div class="row-fluid">
     <div class="span6">
         <h3><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
-        <button type="button" class="btn btn-primary pull-right" onclick="switchWorkspace()">
+        <button type="button" class="btn btn-primary pull-right" id="wsSwitch">
             <c:choose>
                 <c:when test="${flowHandler.workspace eq 'default'}">
                     <fmt:message key="jnt_tagsManager.button.switchToDefault"/>&nbsp;<i class="fa fa-external-link"></i>
@@ -161,7 +161,7 @@
                         </td>
                         <td>
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-primary" onclick="viewUsages('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                <button type="button" class="btn btn-primary viewUsageButton" id="usage_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                     <i class="fa fa-search"></i>&nbsp;<fmt:message key="jnt_tagsManager.label.viewUsages"/>
                                 </button>
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -169,12 +169,12 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" onclick="bbRenameTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        <a href="#" class="renameTagButton" id="rename_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                             <i class="fa fa-pencil"></i>&nbsp;<fmt:message key="label.rename"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="text-danger" onclick="bbDeleteTag('${fn:escapeXml(functions:escapeJavaScript(tag.key))}')">
+                                        <a href="#" class="text-danger deleteTagButton" id="delete_${fn:escapeXml(functions:escapeJavaScript(tag.key))}">
                                             <i class="fa fa-trash"></i>&nbsp;<fmt:message key="label.delete"/>
                                         </a>
                                     </li>
