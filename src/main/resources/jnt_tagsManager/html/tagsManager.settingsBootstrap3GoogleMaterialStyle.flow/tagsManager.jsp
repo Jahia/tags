@@ -85,7 +85,6 @@
             attachViewUsagesListeners();
         });
 </script>
-ddddd
 <div class="page-header">
     <h2><fmt:message key="jnt_tagsManager.title.ListOgTags"><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
