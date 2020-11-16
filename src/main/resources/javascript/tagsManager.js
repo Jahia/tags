@@ -15,6 +15,7 @@ function callWorkInProgress(){
 }
 
 function bbRenameTag(oldName) {
+    oldName = JSON.parse('"' + oldName + '"');
     bootbox.dialog({
         show: false,
         title: "<h4>" + jsVarMap.labelRename + " : " + oldName + "</h4>",
@@ -63,6 +64,7 @@ function bbRenameTag(oldName) {
 }
 
 function bbDeleteTag(selectedTag) {
+    selectedTag = JSON.parse('"' + selectedTag + '"');
     bootbox.dialog({
         title: "<h4>" + jsVarMap.labelDelete + " : " + selectedTag + "</h4>",
         message: "<p>" + jsVarMap.modalDeleteAll + "</p>",
@@ -87,6 +89,7 @@ function bbDeleteTag(selectedTag) {
 }
 
 function viewUsages(selectedTag) {
+    selectedTag = JSON.parse('"' + selectedTag + '"');
     callWorkInProgress();
     $("#eventInput").attr("name", "_eventId_viewTagUsages");
     $("#selectedTag").val(selectedTag);
