@@ -95,8 +95,8 @@ function attachRenameAndDeleteListeners() {
     }
 
     var deleteButtons = document.getElementsByClassName("deleteTagButton");
-    for (var i = 0; i < deleteButtons.length; i++) {
-        deleteButtons[i].addEventListener("click", function(e) {
+    for (var j = 0; j < deleteButtons.length; j++) {
+        deleteButtons[j].addEventListener("click", function(e) {
             bbDeleteTag(e.currentTarget.id.replace("delete_", ""));
         });
     }
