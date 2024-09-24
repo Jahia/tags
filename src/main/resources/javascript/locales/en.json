@@ -1,5 +1,15 @@
 {
   "label" : {
-    "title": "Tag manager"
+    "title": "Tag manager",
+    "header": {
+        "title": "List of tags - in {{workspace}} workspace",
+        "actions": {
+            "switchWorkspace": "Switch to {{otherWorkspace}} workspace"
+        }
+    },
+    "viewUsages": {
+        "cellLabel": "{{usagesCount}} usage",
+        "cellLabel_plural": "{{usagesCount}} usages"
+    }
   }
 }

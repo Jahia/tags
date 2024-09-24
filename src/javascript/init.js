@@ -1,6 +1,8 @@
+import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
 import {toIconComponent} from '@jahia/moonstone';
+import TagsManagerLayout from '~/layout/TagsManagerLayout';
 
 function registerRoutes() {
     registry.add('adminRoute', 'tags', {
@@ -10,7 +12,7 @@ function registerRoutes() {
         isSelectable: true,
         requiredPermission: 'tagManager',
         requireModuleInstalledOnSite: 'tags',
-        iframeUrl: `${window.contextJsParameters.contextPath}/cms/editframe/default/$lang/sites/$site-key.tagsManager.html`
+        render: () => <TagsManagerLayout/>
     });
     console.log('%c Tags manager module registered routes', 'color: #3c8cba');
 }
