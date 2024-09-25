@@ -9,13 +9,17 @@ const useTagsData = () => {
             workspace: workspace.gqlType,
             sitePath: siteInfo.path
         },
-        notifyOnNetworkStatusChange: true
+        notifyOnNetworkStatusChange: true,
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading) {
         return {loading, error};
     }
 
+    /**
+     * Transforms node data containing tags into a list of tags with their node references.
+     */
     const updateData = () => {
         if (!queryData) {
             return [];
@@ -32,7 +36,7 @@ const useTagsData = () => {
         return Object.keys(tags).map(tag => ({
             name: {value: tag},
             usagesCount: tags[tag].length,
-            data: tags[tag]
+            usages: tags[tag]
         }));
     };
 

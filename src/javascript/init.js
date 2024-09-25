@@ -3,6 +3,7 @@ import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
 import {toIconComponent} from '@jahia/moonstone';
 import TagsManagerLayout from '~/layout/TagsManagerLayout';
+import {registerActions} from '~/actions/registerActions';
 
 function registerRoutes() {
     registry.add('adminRoute', 'tags', {
@@ -14,7 +15,7 @@ function registerRoutes() {
         requireModuleInstalledOnSite: 'tags',
         render: () => <TagsManagerLayout/>
     });
-    console.log('%c Tags manager module registered routes', 'color: #3c8cba');
+    console.log('%c Tags module registered routes', 'color: #3c8cba');
 }
 
 export default function () {
@@ -23,6 +24,7 @@ export default function () {
         callback: async () => {
             await i18next.loadNamespaces('tags');
             registerRoutes();
+            registerActions();
         }
     });
 }
