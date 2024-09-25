@@ -1,5 +1,8 @@
 {
   "label" : {
-    "title": "Gestionnaire de tags"
+    "title": "Gestionnaire de tags",
+    "header": {
+      "title": "List of tags - in {{workspace}} workspace"
+    }
   }
 }
