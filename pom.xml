@@ -54,7 +54,7 @@
     </parent>
 
     <artifactId>tags</artifactId>
-    <version>8.3.0-SNAPSHOT</version>
+    <version>9.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Jahia Tags</name>
     <description>This is the custom module (Jahia Tags) for running on a Jahia server.</description>
@@ -68,8 +68,9 @@
 
     <properties>
         <jahia-depends>default,siteSettings</jahia-depends>
+        <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MC0CFHSZlQoWjs+CEMfqo6JpVpOsKCq2AhUAkKEOXTVCpdFw582aE1IJWhgblFI=</jahia-module-signature>
+        <jahia-module-signature>MC0CFQCJMZW7qZyery1LYjh+rf5NnnELNgIUbpflI3lfC1qUDhqzV4S/sOKHwrI=</jahia-module-signature>
     </properties>
 
     <repositories>
@@ -86,9 +87,68 @@
             <url>https://devtools.jahia.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
-    
+
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/resources/javascript/apps</directory>
+                            <includes>
+                                <include>*</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <executions>
+                    <execution>
+                        <id>npm install node and yarn</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-node-and-yarn</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v18.18.0</nodeVersion>
+                            <yarnVersion>v1.22.19</yarnVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>yarn install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>yarn post-install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>${yarn.arguments}</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sync-pom</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>sync-pom</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
