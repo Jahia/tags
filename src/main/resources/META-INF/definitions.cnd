@@ -1,8 +1,6 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 
-[jnt:tagsManager] > jnt:content, jmix:tagsContent, jmix:hiddenType
-
 [jmix:tagsContent] > jmix:droppableContent, jmix:accessControllableContent  mixin
 
 [jnt:tagCloud] > jnt:content, mix:title, jmix:tagsContent, jmix:bindedComponent
@@ -18,4 +16,3 @@
 [jnt:relatedTagging] > jnt:content, jmix:list, mix:title, jmix:tagsContent
  - j:type (string, choicelist[nodetypes=jmix:editorialContent,resourceBundle]) indexed=no
  - j:nbOfResult (long) = 5  autocreated
-
