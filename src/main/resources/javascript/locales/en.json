@@ -1,5 +1,35 @@
 {
   "label" : {
-    "title": "Tag manager"
+    "title": "Tag manager",
+    "header": {
+        "title": "List of tags - in {{workspace}} workspace",
+        "actions": {
+            "switchWorkspace": "Switch to {{otherWorkspace}} workspace"
+        }
+    },
+    "viewUsages": {
+        "cellLabel": "{{count}} usage",
+        "cellLabel_plural": "{{count}} usages"
+    },
+    "ui" : {
+      "close": "Close",
+      "cancel": "Cancel"
+    },
+    "dialogs": {
+        "editTag": {
+            "title": "Rename tag - \"{{tag}}\"",
+            "newName": "Enter a new name",
+            "confirm": "You are about to rename all the occurrences of this tag on your site, do you really want to perform this action?",
+            "actionButton": "Rename"
+        },
+        "deleteTag": {
+            "title": "Delete tag - \"{{tag}}\"",
+            "confirm": "You are about to delete all the occurrences of this tag on your site. Do you really want to perform this action?",
+            "actionButton": "Delete"
+        },
+        "tagUsages": {
+            "title": "Usages for tag - \"{{tag}}\""
+        }
+    }
   }
 }

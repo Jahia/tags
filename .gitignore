@@ -5,6 +5,20 @@
 *.iml
 *.ipr
 target
+src/main/resources/javascript/bundles
+node
+node_modules
+yarn-error.log
+/src/main/resources/javascript/apps
+/.externalToolBuilders
+graphql.config.json
+graphql.schema.json
+.env
+
+coverage/
+/storybook-static
+
+# macOS
 .DS_Store
-repository.xml
-repository
+.yalc
+yalc.lock

@@ -1,5 +1,8 @@
 {
   "label" : {
-    "title": "Tag Manager"
+    "title": "Tag Manager",
+    "header": {
+      "title": "List of tags - in {{workspace}} workspace"
+    }
   }
 }
