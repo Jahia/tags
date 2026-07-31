@@ -18,5 +18,4 @@
     <bean class="org.jahia.modules.tags.actions.TransformTag" parent="BaseTagAction">
         <property name="requiredMethods" value="POST"/>
     </bean>
-
 </beans>
