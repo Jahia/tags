@@ -52,13 +52,11 @@ import java.util.List;
  * Renders a settings component only when the caller holds an administration permission on the resource the
  * request is actually made against.
  * <p>
- * The tag-management screen is an ordinary, instantiable content type, so the settings container it was
- * designed for is not the only place it can be rendered from. The permission requirement is declared on the
- * settings <em>template</em> that hosts it ({@code j:applyOn=jnt:virtualsite},
- * {@code j:requiredPermissionNames=tagManager}), so it is a property of that template and not of the
- * component: the same component rendered through any other resource — a plain page content area — carries no
- * requirement at all, and the web flow behind it would be handed to whoever can render that resource. This
- * filter makes the requirement a property of the component, so it holds on every render path.
+ * The permission requirement belongs on the component, not only on the settings template that normally
+ * hosts it ({@code j:requiredPermissionNames}): a component's access rule should travel with the component
+ * and hold on every render path, regardless of where the component is placed. This filter makes the
+ * requirement a property of the component so it applies uniformly. Because {@code WebflowAction} re-enters
+ * the render chain for each webflow POST, it covers every transition too, not just the initial GET.
  * <p>
  * The check is evaluated against the <strong>main resource</strong> of the render, not against the component
  * node, and that is load-bearing rather than incidental: the component node of a <em>legitimate</em> settings
