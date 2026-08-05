@@ -91,10 +91,14 @@ public class SettingsComponentPermissionFilter extends AbstractFilter {
 
     @Activate
     public void activate() {
-        // Priority 22: immediately after core's own permission check (TemplatePermissionCheckFilter, 21) and
-        // before the fragment is produced or cached — a refusal must not populate a cache entry that a
-        // differently-privileged caller could later be served.
-        setPriority(22);
+        // Priority 21.5: immediately after core's own permission check (TemplatePermissionCheckFilter, 21) and
+        // clear of the 22.x template band. AbstractFilter breaks a priority tie on the class name, so an exact
+        // 22 would order this against core's templateNodeFilter (22.0) by an accident of package naming rather
+        // than by intent; 21.5 states the intended slot instead of relying on that.
+        // This runs inside the fragment cache's generation scope (live only, 16 / 16.5), which is safe because
+        // that cache keys on the caller's ACL signature: an entry generated for an administrator is not served
+        // to a caller who lacks the grant.
+        setPriority(21.5f);
         setApplyOnNodeTypes(APPLY_ON_NODE_TYPES);
         setDescription("Renders a settings component only for a caller holding an administration permission "
                 + "on the main resource");
