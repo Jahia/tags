@@ -59,6 +59,19 @@ import java.util.regex.Pattern;
  * A component whose ancestors declare no requirement, and a render with no resolvable context resource,
  * yield an empty fragment.
  * <p>
+ * Which condition does the work. Core enforces the same requirement on the same context resource before
+ * this filter runs: {@code TemplatePermissionCheckFilter} sits at priority 21 and restricts no node type.
+ * On the settings route, condition 2 therefore agrees with core rather than adding to it. Condition 1 has
+ * no equivalent in core, because {@code jnt:tagsManager} carries no {@code jmix:requiredPermissions} of
+ * its own and the flow views declare no {@code requirePermissions}. Read this class as a placement guard
+ * first.
+ * <p>
+ * Condition 2 still earns its place, for two reasons. Where the nearest declaring ancestor declares no
+ * requirement, core allows the render and this filter refuses it, and a settings template that ships
+ * without {@code j:requiredPermissionNames} is a real case rather than a hypothetical one: the Page Models
+ * templates in {@code siteSettings} declared none until one was added. Condition 2 also does not depend on
+ * core running first, so it still holds if the filter order changes.
+ * <p>
  * The permissions are evaluated against the render's <strong>context resource</strong> — the main resource,
  * or the ajax resource for an ajax sub-render — and not against the component node. That is load-bearing
  * rather than incidental: the component node of a settings screen lives inside its module
