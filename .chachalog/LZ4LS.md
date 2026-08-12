@@ -2,4 +2,4 @@
 tags: patch
 ---
 
-Render the tag-management screen only for callers administering the resource
+Render the tag-management screen from its settings template, for the administrators that template requires.
