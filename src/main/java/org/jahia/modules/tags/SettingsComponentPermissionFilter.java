@@ -14,7 +14,8 @@
  * no OSGI-INF descriptor and no Service-Component header, so the component silently never registers and
  * the gate below simply does not run. Parents `jahia-modules` >= 8.1.7.0 switch it on already; older ones
  * do not. Verify a descriptor is actually in the built jar rather than assuming.
- */package org.jahia.modules.tags;
+ */
+package org.jahia.modules.tags;
 
 import org.apache.commons.lang.StringUtils;
 import org.jahia.services.content.JCRContentUtils;
