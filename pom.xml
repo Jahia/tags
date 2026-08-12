@@ -89,30 +89,6 @@
 
     <build>
         <plugins>
-            <!-- DO NOT REMOVE without checking the built jar first.
-                 This module inherits the jahia-modules 8.0.1.0 parent, which does not switch on bnd's DS
-                 annotation scanning. Without this instruction an @Component class compiles and ships but
-                 produces no OSGI-INF descriptor and no Service-Component header, so the component never
-                 registers or activates — it fails SILENTLY, and here that would mean the settings-component
-                 permission filter simply does not run. Measured on this module: with the instruction the jar
-                 contains OSGI-INF/org.jahia.modules.tags.SettingsComponentPermissionFilter.xml; without it,
-                 nothing.
-                 Jahia's shared `cortex` harness documents both the rule and this trap — skill
-                 `jahia-java-osgi-declarative-services`: DS is the only DI mechanism allowed in a Jahia
-                 module, and "without <_dsannotations> @Component classes compile but produce no descriptor
-                 — nothing registers or activates". Diagnose with Karaf `scr:list`: a component missing
-                 entirely (rather than UNSATISFIED) means the annotations were never scanned.
-                 Parents >= 8.1.7.0 enable this already, so this block can go when the parent is bumped. -->
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <_dsannotations>*</_dsannotations>
-                    </instructions>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
