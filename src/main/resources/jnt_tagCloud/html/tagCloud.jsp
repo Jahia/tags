@@ -62,7 +62,7 @@
                             <c:param name="autoSuggest" value="false"/>
                         </c:url>
                         word_list.push({
-                            text: "${tag.key}",
+                            text: "${functions:escapeJavaScript(fn:escapeXml(tag.key))}",
                             weight:${functions:round(10 * tag.value / totalUsages)},
                             url: decodeURI("${facetUrl}")
                         });
