@@ -92,13 +92,13 @@
 </script>
 
 <div class="page-header">
-    <h2><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
+    <h2><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${fn:escapeXml(tagDetails.tag)}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h2>
 </div>
 
 <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
     <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-danger</c:when><c:otherwise>alert-success</c:otherwise></c:choose>" role="alert">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        ${message.text}
+        ${fn:escapeXml(message.text)}
     </div>
 </c:forEach>
 
@@ -136,19 +136,19 @@
                                     <c:choose>
                                         <c:when test="${flowHandler.workspace eq 'default'}">
                                             <a href="<c:url value="${url.basePreview}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                    ${usage.displayableName}
+                                                    ${fn:escapeXml(usage.displayableName)}
                                             </a>
                                         </c:when>
                                         <c:otherwise>
                                             <a href="<c:url value="${url.baseLive}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                    ${usage.displayableName}
+                                                    ${fn:escapeXml(usage.displayableName)}
                                             </a>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:if>
                             </td>
                             <td>
-                                ${usage.taggedNodePath}
+                                ${fn:escapeXml(usage.taggedNodePath)}
                             </td>
                             <td>
                                 <button type="button" class="btn btn-default btn-fab btn-fab-xs renameTagButton"
