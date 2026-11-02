@@ -92,7 +92,7 @@
 <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
     <div class="alert <c:choose><c:when test="${message.severity eq 'ERROR'}">alert-error</c:when><c:otherwise>alert-success</c:otherwise></c:choose>">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        ${message.text}
+        ${fn:escapeXml(message.text)}
     </div>
 </c:forEach>
 
@@ -133,7 +133,7 @@
                         <c:set var="totalTags" value="${totalTags+tag.value}"/>
                         <tr>
                             <td>
-                                ${tag.key}
+                                ${fn:escapeXml(tag.key)}
                             </td>
                             <td>
                                 ${tag.value}

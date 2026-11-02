@@ -127,7 +127,7 @@
                             <i class="fa fa-info"></i>&nbsp;
                         </c:otherwise>
                     </c:choose>
-                    ${message.text}
+                    ${fn:escapeXml(message.text)}
                 </div>
             </c:forEach>
         </div>
@@ -154,7 +154,7 @@
                     <c:set var="totalTags" value="${totalTags+tag.value}"/>
                     <tr>
                         <td>
-                            ${tag.key}
+                            ${fn:escapeXml(tag.key)}
                         </td>
                         <td>
                             ${tag.value}

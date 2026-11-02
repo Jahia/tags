@@ -98,7 +98,7 @@
 
 <div class="row-fluid">
     <div class="span6">
-        <h3><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${tagDetails.tag}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
+        <h3><fmt:message key="jnt_tagsManager.title.detailsForTag"><fmt:param value="${fn:escapeXml(tagDetails.tag)}"/><fmt:param value="${fn:length(tagDetails.usages)}"/><fmt:param value="${flowHandler.workspace}"/></fmt:message></h3>
     </div>
     <div class="span6">
         <button type="button" class="btn btn-primary pull-right" id="backToList">
@@ -123,7 +123,7 @@
                             <i class="fa fa-info"></i>&nbsp;
                         </c:otherwise>
                     </c:choose>
-                        ${message.text}
+                        ${fn:escapeXml(message.text)}
                 </div>
             </c:forEach>
         </div>
@@ -153,19 +153,19 @@
                                 <c:choose>
                                     <c:when test="${flowHandler.workspace eq 'default'}">
                                         <a href="<c:url value="${url.basePreview}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                ${usage.displayableName}
+                                                ${fn:escapeXml(usage.displayableName)}
                                         </a>
                                     </c:when>
                                     <c:otherwise>
                                         <a href="<c:url value="${url.baseLive}${usage.displayablePath}.html"/>" title="<fmt:message key="label.pagesTab"/>" target="_blank">
-                                                ${usage.displayableName}
+                                                ${fn:escapeXml(usage.displayableName)}
                                         </a>
                                     </c:otherwise>
                                 </c:choose>
                             </c:if>
                         </td>
                         <td>
-                                ${usage.taggedNodePath}
+                                ${fn:escapeXml(usage.taggedNodePath)}
                         </td>
                         <td class="text-right">
                             <div class="btn-group pull-right">

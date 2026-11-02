@@ -21,7 +21,7 @@
             <c:forEach items="${moduleMap.currentList}" var="subchild" begin="${moduleMap.begin}" end="${moduleMap.end}">
                 <li>
                     <c:set var="displayableNode" value="${jcr:findDisplayableNode(subchild, renderContext)}"/>
-                    <a href="<c:url value="${url.base}${displayableNode.path}.html"/>">${subchild.displayableName}</a>
+                    <a href="<c:url value="${url.base}${displayableNode.path}.html"/>">${fn:escapeXml(subchild.displayableName)}</a>
                 </li>
             </c:forEach>
         </ul>
